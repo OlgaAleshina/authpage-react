@@ -6,14 +6,13 @@ import routes from "./config/routes.js";
 
 
 function App() {
-
-  const [authenticated, setIsAuthentificated] = useState(false)
-
-
- useEffect(() => {
-      localStorage.getItem('token') ? setIsAuthentificated(true) : setIsAuthentificated(false)
-  }, []);
  
+  const [authentificated, setIsAuthentificated] = useState(false)
+
+ 
+  useEffect(() => {
+    localStorage.getItem('token') ? setIsAuthentificated(true) : setIsAuthentificated(false)
+});
   
   return (
     <Container className="text-center">
@@ -24,7 +23,7 @@ function App() {
         render={(props) =>
           route.redirect ? <Redirect to={route.redirect}/> :
           route.protected ? (
-            authenticated ? route.component &&
+            authentificated ? route.component &&
               <route.component {...props} routes={route.routes}/> : <Redirect to='/login'/>
           ) : route.component && <route.component {...props} routes={route.routes}/>
           }/>)}
