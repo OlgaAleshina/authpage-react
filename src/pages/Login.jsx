@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useHistory} from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -29,12 +29,10 @@ const handleLogin =(e) =>{
   API.post('/api/login', user)
     .then(res=>  localStorage.setItem("token", res))
     .then(history.push("/home"))
-    //console.log(res))
     .catch(err=>{
       console.log(err); 
      })    
 }
-
 
 
 const handleRegister =() => {

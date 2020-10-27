@@ -36,19 +36,4 @@ function App() {
 }
 
 export default App;
-/*   <Switch>  
 
-<Route path="/">
-  <Login />
-</Route>
-<Route exact path="/login">
-  <Login />
-</Route>
-<Route exact path="/register">
-  <Register />
-</Route>
-<PrivateRoute exact path="/home">
-  <Home />
-</PrivateRoute>
-
-</Switch>*/

@@ -5,8 +5,8 @@ import Home from "../pages/Home";
 export const routes = [{
     path:"/",
     exact: true,
-    protected: false,
-    redirect: "/login",
+    protected: true,
+    redirect: "/home",
     
 },
 { 
