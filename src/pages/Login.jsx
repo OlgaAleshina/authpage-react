@@ -3,11 +3,13 @@ import {useHistory} from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import API from "../utils/API.js";
+import { useAuth } from "../config/auth";
 
 
 const Login =() => {
   let history = useHistory();
-
+  
+  
   const [user, getUser] = useState(
     {email:"",
     password: ""
@@ -27,7 +29,7 @@ const handleLogin =(e) =>{
   e.preventDefault();
  
   API.post('/api/login', user)
-    .then(res=>  localStorage.setItem("token", res))
+    .then(res=> { localStorage.setItem("token", res)})
     .then(history.push("/home"))
     .catch(err=>{
       console.log(err); 

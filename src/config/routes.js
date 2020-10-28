@@ -35,4 +35,3 @@ component: Home,
 export default routes;
 
 
-    
