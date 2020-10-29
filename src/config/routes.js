@@ -3,17 +3,17 @@ import Register from "../pages/Register";
 import Home from "../pages/Home";
 
 export const routes = [{
-    path:"/",
+    path: "/",
     exact: true,
     protected: true,
     redirect: "/home",
-    
+
 },
-{ 
+{
     path: "/login",
-exact: true,
-protected: false,
-component: Login,
+    exact: true,
+    protected: false,
+    component: Login,
 
 },
 {
@@ -21,13 +21,13 @@ component: Login,
     exact: true,
     protected: false,
     component: Register,
-    
+
 },
-{ 
+{
     path: '/home',
-exact: true,
-protected: true,
-component: Home,
+    exact: true,
+    protected: true,
+    component: Home,
 
 }
 ];

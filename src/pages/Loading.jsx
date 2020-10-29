@@ -1,11 +1,11 @@
 import Spinner from 'react-bootstrap/Spinner'
 
-const Loading = () =>
-{
+const Loading = () => {
+
     return (
         <Spinner animation="border" role="status">
-  <span className="sr-only">Loading...</span>
-</Spinner>
+            <span className="sr-only">Loading...</span>
+        </Spinner>
     )
 };
 
