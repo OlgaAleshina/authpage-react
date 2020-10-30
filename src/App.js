@@ -3,20 +3,13 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import routes from "./config/routes.js";
 import { useSelector } from "react-redux";
-import PrivateRoute from "./utils/authentification";
+import { PrivateRoute } from "./utils/authentification";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 
 
 function App() {
-
-  //const isAuth = useSelector(state => state.user.isAuthentificated);
-  //const [hasToken, setHasToken] = useState(false);
-
-  //useEffect(() => {
-  //  localStorage.getItem('token') ? setHasToken(true) : setHasToken(false)
-  //}, []);
 
 
   return (
@@ -34,7 +27,7 @@ function App() {
         </Route>
         <PrivateRoute exact path="/home">
           <Home />
-        </PrivateRoute>}
+        </PrivateRoute>
       </Switch>
 
 
