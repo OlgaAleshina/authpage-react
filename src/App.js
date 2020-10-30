@@ -11,6 +11,13 @@ import { Register } from "./pages/Register";
 
 function App() {
 
+  const isAuth = useSelector(state => state.user.isAuthentificated);
+  const [hasToken, setHasToken] = useState(false);
+
+
+  useEffect(() => {
+    localStorage.getItem('token') ? setHasToken(true) : setHasToken(false);
+  }, []);
 
   return (
     <Container className="text-center">
@@ -25,7 +32,7 @@ function App() {
         <Route exact path="/register">
           <Register />
         </Route>
-        <PrivateRoute exact path="/home">
+        <PrivateRoute exact path="/home" isAuthentificated={isAuth || hasToken}>
           <Home />
         </PrivateRoute>
       </Switch>
@@ -38,32 +45,3 @@ function App() {
 
 export default App;
 
-/*
-<Switch>
-        <Route exact path="/">
-          <Redirect to={'/home'} />
-        </Route>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/register">
-          <Register />
-        </Route>
-        <PrivateRoute exact path="/home">
-          <Home />
-        </PrivateRoute>
-  </Switch>
-
-
-<Switch>{routes.map(route => <Route
-        path={route.path}
-        exact={route.exact}
-        render={(props) =>
-          route.redirect ? <Redirect to={route.redirect} /> :
-            route.protected ? (
-              hasToken || isAuth ? route.component &&
-                <route.component {...props} routes={route.routes} /> : <Redirect to='/login' />
-            ) : route.component && <route.component {...props} routes={route.routes} />
-        } />)}
-      </Switch>
-      */
