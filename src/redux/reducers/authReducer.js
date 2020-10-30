@@ -1,4 +1,4 @@
-import { SET_IS_AUTH } from '../actions/authActions';
+import { SET_IS_AUTH } from '../actions/constants';
 
 
 function authReducer(state = [], action) {

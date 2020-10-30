@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import API from "../utils/API.js";
+import { registerRequest } from "../API.js";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 
-const Register = () => {
+export const Register = () => {
+
   let history = useHistory();
   const dispatch = useDispatch();
 
@@ -26,16 +27,18 @@ const Register = () => {
     }));
   };
 
-  const handleAdd = (e) => {
+  const handleAdd = async (e) => {
     e.preventDefault();
-    API.post('/api/register', user)
-      .then(res => localStorage.setItem("token", res))
-      .then(() => dispatch({ type: "SET_IS_AUTH" }))
-      .then(() => history.push("/home"))
-      .catch(err => {
-        console.log(err);
 
-      })
+    try {
+      const response = await registerRequest(user);
+      localStorage.setItem("token", response);
+      dispatch({ type: "SET_IS_AUTH" });
+      history.push("/home")
+    }
+    catch (err) { console.log(err); }
+
+
 
   };
 
@@ -59,4 +62,11 @@ const Register = () => {
   )
 };
 
-export default Register;
+/* registerRequest(user)
+       .then(res => localStorage.setItem("token", res))
+       .then(() => dispatch({ type: "SET_IS_AUTH" }))
+       .then(() => history.push("/home"))
+       .catch(err => {
+         console.log(err);
+
+       })*/

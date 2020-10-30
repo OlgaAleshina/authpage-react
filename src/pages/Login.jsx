@@ -3,10 +3,10 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import API from "../utils/API.js";
+import { loginRequest } from '../API.js';
 
 
-const Login = () => {
+export const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -26,19 +26,19 @@ const Login = () => {
   };
 
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    API.post('/api/login', user)
-      .then(res => { localStorage.setItem("token", res) })
-      .then(() => dispatch({ type: "SET_IS_AUTH" }))
-      .then(() => history.push("/home"))
-      .catch(err => {
-        console.log(err);
-      })
-  }
+    try {
+      const response = await loginRequest(user);
+      localStorage.setItem("token", response);
+      dispatch({ type: "SET_IS_AUTH" });
+      history.push("/home")
+    }
+    catch (err) { console.log(err); }
 
 
+  };
   const handleRegister = () => {
     history.push("/register");
   }
@@ -64,4 +64,10 @@ const Login = () => {
   )
 };
 
-export default Login;
+/*loginRequest(user)
+      .then(res => { localStorage.setItem("token", res) })
+      .then(() => dispatch({ type: "SET_IS_AUTH" }))
+      .then(() => history.push("/home"))
+      .catch(err => {
+        console.log(err);
+      });*/

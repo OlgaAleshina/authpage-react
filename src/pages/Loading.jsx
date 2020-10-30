@@ -1,6 +1,6 @@
 import Spinner from 'react-bootstrap/Spinner'
 
-const Loading = () => {
+export const Loading = () => {
 
     return (
         <Spinner animation="border" role="status">
@@ -9,4 +9,3 @@ const Loading = () => {
     )
 };
 
-export default Loading;

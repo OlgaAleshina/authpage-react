@@ -1,5 +1,4 @@
-export const SET_IS_AUTH = 'SET_IS_AUTH';
-
+import { SET_IS_AUTH } from './constants';
 
 export function setIsAuth() {
     return { type: SET_IS_AUTH };
