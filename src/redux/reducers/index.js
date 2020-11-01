@@ -1,10 +1,11 @@
 import { createStore } from "redux";
-import authReducer from "./authReducer";
+import { authReducer } from "./authReducer";
 
 
 const initialState = {
     user: {
-        isAuthentificated: false
+        isAuthentificated: false,
+        token: null
     }
 
 };

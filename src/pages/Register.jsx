@@ -12,20 +12,6 @@ export const Register = () => {
   const dispatch = useDispatch();
 
 
-  /*const [user, setUser] = useState(
-    {
-      email: "",
-      password: ""
-    }
-  )
-
-  const handleInput = (e) => {
-    const { id, value } = e.target;
-    setUser((prevState) => ({
-      ...prevState,
-      [id]: value
-    }));
-  };*/
 
   const handleAdd = async (user) => {
 
@@ -41,19 +27,20 @@ export const Register = () => {
 
 
   };
-
+  const emailRules = { required: true, pattern: /A[A-Z0-9+_.-]+@[A-Z0-9.-]+/ }
+  const passwordRules = { required: true, pattern: /[A-Z][a-z][0-9]{8}/ }
 
   return (
 
     <Form className="container col-6 p-5" onSubmit={handleSubmit(handleAdd)}>
       <Form.Group controlId="email">
-        <Form.Control type="email" placeholder="Enter email" name="email" ref={register({ required: true })} />
+        <Form.Control type="email" placeholder="Enter email" name="email" ref={register(emailRules)} />
         {errors.email && <span>This field is required</span>}
       </Form.Group>
 
       <Form.Group controlId="password">
-        <Form.Control type="password" placeholder="Password" name="password" ref={register({ required: true })} />
-        {errors.password && <span>This field is required</span>}
+        <Form.Control type="password" placeholder="Password" name="password" ref={register(passwordRules)} />
+        {errors.errorMessage?.message}
       </Form.Group>
 
       <Button variant="primary" type="submit">

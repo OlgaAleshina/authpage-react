@@ -18,7 +18,7 @@ export const Login = () => {
     try {
       const response = await loginRequest(user);
       localStorage.setItem("token", response.data.token);
-      dispatch({ type: "SET_IS_AUTH" });
+      dispatch({ type: "SET_IS_AUTH", token: response.data.token });
       history.push("/home")
     }
     catch (err) { console.log(err); }
