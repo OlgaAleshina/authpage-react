@@ -1,63 +1,87 @@
-import {useState, useEffect} from "react";
-import {useHistory} from "react-router-dom";
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 import Form from 'react-bootstrap/Form';
+import { ErrorMessage } from '@hookform/error-message';
 import Button from 'react-bootstrap/Button';
-import API from "../utils/API.js";
+import { post } from '../API.js';
+import { ErrorAlert } from "../components/errorAlert";
 
 
-const Login =() => {
-  let history = useHistory();
+export const Login = () => {
+  const { register, handleSubmit, errors } = useForm();
 
-  const [user, getUser] = useState(
-    {email:"",
-    password: ""
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [fetchError, setFetchError] = useState(false);
+
+
+  const handleLogin = async (user) => {
+
+    try {
+      const response = await post('/api/login', user);
+      localStorage.setItem("token", response.data.token);
+      dispatch({ type: "SET_IS_AUTH", token: response.data.token });
+      history.push("/home")
+    }
+    catch (err) {
+      setFetchError(true);
+      console.log(err);
+    }
+
+  };
+
+  const handleRegister = () => {
+    history.push("/register");
   }
+
+  const emailRules = {
+    required: "This is required.",
+    pattern: {
+      value: /[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/,
+      message: "Please, enter valid e-mail."
+    }
+  };
+
+  return (
+    <>
+      {fetchError && <ErrorAlert />}
+      <Form className="container col-6 p-5" onSubmit={handleSubmit(handleLogin)}>
+        <Form.Group controlId="email"  >
+          <Form.Control type="text" placeholder="Enter email" name="email" ref={register(emailRules)} />
+          <ErrorMessage errors={errors} name="email">
+            {({ messages }) =>
+              messages &&
+              Object.entries(messages).map(([type, message]) => (
+                <p key={type}>{message}</p>
+              ))
+            }
+          </ErrorMessage>
+        </Form.Group>
+
+        <Form.Group controlId="password">
+          <Form.Control type="password" placeholder="Password" name="password" ref={register({ required: true })} />
+
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Login
+      </Button>
+        <Button variant="light" onClick={handleRegister}>
+          Register
+        </Button>
+      </Form>
+    </>
   )
-
-  const handleInput = (e) => {
-    const { id, value } = e.target;
-    getUser((prevState) => ({
-        ...prevState,
-        [id]: value
-    }));
 };
 
+/*loginRequest(user)
+  .then(res => {localStorage.setItem("token", res)})
+  .then(() => dispatch({type: "SET_IS_AUTH" }))
+  .then(() => history.push("/home"))
+  .catch(err => {
+    console.log(err);
+});
 
-const handleLogin =(e) =>{
-  e.preventDefault();
- 
-  API.post('/api/login', user)
-    .then(res=>  localStorage.setItem("token", res))
-    .then(history.push("/home"))
-    .catch(err=>{
-      console.log(err); 
-     })    
-}
-
-
-const handleRegister =() => {
-  history.push("/register");
-}
-    return (
-        
-<Form className="container col-6 p-5" onSubmit={handleLogin}>
-  <Form.Group controlId="email"  >
-    <Form.Control type="email" placeholder="Enter email" value={user.email} onChange={handleInput} />
-</Form.Group>
-
-  <Form.Group controlId="password">
-     <Form.Control type="password" placeholder="Password" value={user.password} onChange={handleInput}/>
-  </Form.Group>
-  
-  <Button variant="primary" type="submit">
-    Login
-  </Button>
-  <Button variant="light" onClick={handleRegister}>
-    Register
-  </Button>
-</Form>
-
-    )
-};
- 
-export default Login;
+*/
