@@ -19,7 +19,7 @@ export const Register = () => {
     try {
       const response = await registerRequest(user);
       localStorage.setItem("token", response);
-      dispatch({ type: "SET_IS_AUTH" });
+      dispatch({ type: "SET_IS_AUTH", token: response.data.token });
       history.push("/home")
     }
     catch (err) { console.log(err); }
