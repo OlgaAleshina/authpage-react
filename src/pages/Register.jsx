@@ -2,6 +2,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import Form from 'react-bootstrap/Form';
+import { ErrorMessage } from '@hookform/error-message';
 import Button from 'react-bootstrap/Button';
 import { registerRequest } from "../API.js";
 
@@ -27,20 +28,52 @@ export const Register = () => {
 
 
   };
-  const emailRules = { required: true, pattern: /A[A-Z0-9+_.-]+@[A-Z0-9.-]+/ }
+  const emailRules = { required: true, pattern: /A[A-Z0-9+_.-]+@[A-Z0-9.-]+/ } //[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}
   const passwordRules = { required: true, pattern: /[A-Z][a-z][0-9]{8}/ }
 
   return (
 
     <Form className="container col-6 p-5" onSubmit={handleSubmit(handleAdd)}>
       <Form.Group controlId="email">
-        <Form.Control type="email" placeholder="Enter email" name="email" ref={register(emailRules)} />
-        {errors.email && <span>This field is required</span>}
+        <Form.Control type="text" placeholder="Enter email" name="email" ref={register({
+          required: "This is required.",
+          pattern: {
+            value: /[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/,
+            message: "Please, enter valid e-mail."
+          },
+
+        })} />
+        <ErrorMessage errors={errors} name="email">
+          {({ messages }) =>
+            messages &&
+            Object.entries(messages).map(([type, message]) => (
+              <p key={type}>{message}</p>
+            ))
+          }
+        </ErrorMessage>
       </Form.Group>
 
       <Form.Group controlId="password">
-        <Form.Control type="password" placeholder="Password" name="password" ref={register(passwordRules)} />
-        {errors.errorMessage?.message}
+        <Form.Control type="password" placeholder="Password" name="password" ref={register({
+          required: "This is required.",
+          pattern: {
+            value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).+/,
+            message: "Please, include at least 1 number, 1 uppercase letter and 1 lowercase letter."
+          },
+          minLength: {
+            value: 8,
+            message: "Please, enter at least 8 symbols."
+          }
+        })} />
+        <ErrorMessage errors={errors} name="password">
+          {({ messages }) =>
+            messages &&
+            Object.entries(messages).map(([type, message]) => (
+              <p key={type}>{message}</p>
+            ))
+          }
+        </ErrorMessage>
+
       </Form.Group>
 
       <Button variant="primary" type="submit">
