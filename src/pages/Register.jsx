@@ -13,10 +13,7 @@ export const Register = () => {
   const dispatch = useDispatch();
 
 
-
   const handleAdd = async (user) => {
-
-
     try {
       const response = await registerRequest(user);
       localStorage.setItem("token", response);
@@ -24,25 +21,35 @@ export const Register = () => {
       history.push("/home")
     }
     catch (err) { console.log(err); }
-
-
-
   };
-  const emailRules = { required: true, pattern: /A[A-Z0-9+_.-]+@[A-Z0-9.-]+/ } //[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}
-  const passwordRules = { required: true, pattern: /[A-Z][a-z][0-9]{8}/ }
+
+
+  const emailRules = {
+    required: "This is required.",
+    pattern: {
+      value: /[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/,
+      message: "Please, enter valid e-mail."
+    }
+  };
+
+  const passwordRules = {
+    required: "This is required.",
+    pattern: {
+      value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).+/,
+      message: "Please, include at least 1 number, 1 uppercase letter and 1 lowercase letter."
+    },
+    minLength: {
+      value: 8,
+      message: "Please, enter at least 8 symbols."
+    }
+  }
+
 
   return (
 
-    <Form className="container col-6 p-5" onSubmit={handleSubmit(handleAdd)}>
+    <Form className="container col-6 p-5" onSubmit={handleSubmit(handleAdd)} >
       <Form.Group controlId="email">
-        <Form.Control type="text" placeholder="Enter email" name="email" ref={register({
-          required: "This is required.",
-          pattern: {
-            value: /[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/,
-            message: "Please, enter valid e-mail."
-          },
-
-        })} />
+        <Form.Control type="text" placeholder="Enter email" name="email" ref={register(emailRules)} />
         <ErrorMessage errors={errors} name="email">
           {({ messages }) =>
             messages &&
@@ -54,17 +61,7 @@ export const Register = () => {
       </Form.Group>
 
       <Form.Group controlId="password">
-        <Form.Control type="password" placeholder="Password" name="password" ref={register({
-          required: "This is required.",
-          pattern: {
-            value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).+/,
-            message: "Please, include at least 1 number, 1 uppercase letter and 1 lowercase letter."
-          },
-          minLength: {
-            value: 8,
-            message: "Please, enter at least 8 symbols."
-          }
-        })} />
+        <Form.Control type="password" placeholder="Password" name="password" ref={register(passwordRules)} />
         <ErrorMessage errors={errors} name="password">
           {({ messages }) =>
             messages &&
@@ -79,7 +76,7 @@ export const Register = () => {
       <Button variant="primary" type="submit">
         Save
         </Button>
-    </Form>
+    </Form >
 
   )
 };

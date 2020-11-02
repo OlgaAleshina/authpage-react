@@ -2,6 +2,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import Form from 'react-bootstrap/Form';
+import { ErrorMessage } from '@hookform/error-message';
 import Button from 'react-bootstrap/Button';
 import { loginRequest } from '../API.js';
 
@@ -28,17 +29,33 @@ export const Login = () => {
   const handleRegister = () => {
     history.push("/register");
   }
+
+  const emailRules = {
+    required: "This is required.",
+    pattern: {
+      value: /[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/,
+      message: "Please, enter valid e-mail."
+    }
+  };
+
   return (
 
     <Form className="container col-6 p-5" onSubmit={handleSubmit(handleLogin)}>
       <Form.Group controlId="email"  >
-        <Form.Control type="email" placeholder="Enter email" name="email" ref={register({ required: true })} />
-        {errors.email && <span>This field is required</span>}
+        <Form.Control type="text" placeholder="Enter email" name="email" ref={register(emailRules)} />
+        <ErrorMessage errors={errors} name="email">
+          {({ messages }) =>
+            messages &&
+            Object.entries(messages).map(([type, message]) => (
+              <p key={type}>{message}</p>
+            ))
+          }
+        </ErrorMessage>
       </Form.Group>
 
       <Form.Group controlId="password">
         <Form.Control type="password" placeholder="Password" name="password" ref={register({ required: true })} />
-        {errors.password && <span>This field is required</span>}
+
       </Form.Group>
 
       <Button variant="primary" type="submit">
