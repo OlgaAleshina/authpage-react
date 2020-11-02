@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import Form from 'react-bootstrap/Form';
 import { ErrorMessage } from '@hookform/error-message';
 import Button from 'react-bootstrap/Button';
-import { loginRequest } from '../API.js';
+import { post } from '../API.js';
 import { ErrorAlert } from "../components/errorAlert";
 
 
@@ -20,7 +20,7 @@ export const Login = () => {
   const handleLogin = async (user) => {
 
     try {
-      const response = await loginRequest(user);
+      const response = await post('/api/login', user);
       localStorage.setItem("token", response.data.token);
       dispatch({ type: "SET_IS_AUTH", token: response.data.token });
       history.push("/home")

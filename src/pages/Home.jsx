@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Pagination, List } from 'antd';
+import { Pagination, List, Table, Image } from 'antd';
 import { ErrorAlert } from "../components/errorAlert";
-import { getUserList } from "../API.js";
+import { get } from "../API.js";
 
 
 export const Home = () => {
@@ -9,10 +9,41 @@ export const Home = () => {
     const [fetchError, setFetchError] = useState(false);
     const [currentPage, setCurrentPage] = useState(1)
 
+
+    const columns = [
+        {
+            title: 'Avatar',
+            dataIndex: 'avatar',
+            key: 'avatar',
+            render: avatar => (
+                <Image
+                    width={50}
+                    src={avatar}
+                />
+            )
+        },
+        {
+            title: 'First Name',
+            dataIndex: 'first_name',
+            key: 'first_name',
+        },
+        {
+            title: 'Last Name',
+            dataIndex: 'last_name',
+            key: 'last_name',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+        },
+    ];
+
+
     useEffect(() => {
         async function fetchUserList() {
             try {
-                const response = await getUserList(currentPage);
+                const response = await get(`/api/users?page=${currentPage}`);
                 setUserData(response.data)
 
                 //dispatch({ type: "SET_IS_AUTH", token: response.data.token });
@@ -34,7 +65,22 @@ export const Home = () => {
     return (
         <>
             {fetchError && <ErrorAlert />}
-            <List
+            <Table dataSource={userData.data} columns={columns} pagination={false} />
+
+            <Pagination
+                simple
+                defaultCurrent={1}
+                current={currentPage}
+                total={userData.total}
+                defaultPageSize={userData.per_page}
+                onChange={handlePageChange} />
+
+        </>
+    )
+};
+
+/*
+<List
                 bordered
                 dataSource={userData.data}
                 renderItem={item => (
@@ -43,10 +89,4 @@ export const Home = () => {
                     </List.Item>
                 )}
             />
-
-            <Pagination simple defaultCurrent={1} current={currentPage} total={userData.total} defaultPageSize={userData.per_page} onChange={handlePageChange} />
-
-        </>
-    )
-};
-
+            */

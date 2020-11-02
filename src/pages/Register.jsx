@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Form from 'react-bootstrap/Form';
 import { ErrorMessage } from '@hookform/error-message';
 import Button from 'react-bootstrap/Button';
-import { registerRequest } from "../API.js";
+import { post } from "../API.js";
 
 export const Register = () => {
   const { register, handleSubmit, errors } = useForm();
@@ -15,7 +15,7 @@ export const Register = () => {
 
   const handleAdd = async (user) => {
     try {
-      const response = await registerRequest(user);
+      const response = await post("/api/register", user);
       localStorage.setItem("token", response);
       dispatch({ type: "SET_IS_AUTH", token: response.data.token });
       history.push("/home")
