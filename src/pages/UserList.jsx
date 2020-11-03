@@ -77,11 +77,6 @@ export const UserList = () => {
                             onChange={handlePageChange} />
 
 
-                        <Switch>
-                            <Route path={`${path}/:id`} >
-                                <UserCard />
-                            </Route>
-                        </Switch>
                     </>
                 )}
         </>
