@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, BrowserRouter } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import routes from "./config/routes.js";
 import { useSelector } from "react-redux";
 import { PrivateRoute } from "./utils/authentification";
-import { Home } from "./pages/Home";
+import { UserList } from "./pages/UserList";
+import { UserCard } from "./pages/UserCard";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 
@@ -24,7 +25,7 @@ function App() {
 
       <Switch>
         <Route exact path="/">
-          <Redirect to="/home" />
+          <Redirect to="/userlist" />
         </Route>
         <Route exact path="/login">
           <Login />
@@ -32,11 +33,13 @@ function App() {
         <Route exact path="/register">
           <Register />
         </Route>
-        <PrivateRoute exact path="/home" isAuthentificated={isAuth || hasToken}>
-          <Home />
+        <PrivateRoute exact path="/userlist" isAuthentificated={isAuth || hasToken}>
+          <UserList />
+        </PrivateRoute>
+        <PrivateRoute path="/userlist/:id" isAuthentificated={isAuth || hasToken}>
+          <UserCard />
         </PrivateRoute>
       </Switch>
-
 
 
     </Container>

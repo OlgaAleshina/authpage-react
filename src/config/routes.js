@@ -1,6 +1,6 @@
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
-import { Home } from "../pages/Home";
+import { UserList } from "../pages/UserList";
 
 export const routes = [{
     path: "/",
@@ -24,10 +24,10 @@ export const routes = [{
 
 },
 {
-    path: '/home',
+    path: '/userlist',
     exact: true,
     protected: true,
-    component: Home,
+    component: UserList,
 
 }
 ];
